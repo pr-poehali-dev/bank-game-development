@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import Icon from '@/components/ui/icon';
 import { toast } from '@/hooks/use-toast';
+import BankHeader from '@/components/BankHeader';
+import MainTab from '@/components/MainTab';
+import FinanceTab from '@/components/FinanceTab';
+import BusinessTab from '@/components/BusinessTab';
+import MarketTab from '@/components/MarketTab';
+import DepositDialog from '@/components/DepositDialog';
+import CreditDialog from '@/components/CreditDialog';
+import SellProductDialog from '@/components/SellProductDialog';
 
 interface Product {
   id: string;
@@ -248,27 +249,7 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
-              <Icon name="Building2" className="text-white" size={24} />
-            </div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-              СБЕРБАНК
-            </h1>
-          </div>
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon">
-              <Icon name="Bell" size={20} />
-            </Button>
-            <Button variant="ghost" size="icon">
-              <Icon name="Settings" size={20} />
-            </Button>
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-pink-500" />
-          </div>
-        </div>
-      </header>
+      <BankHeader />
 
       <main className="container mx-auto px-4 py-6">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -292,381 +273,67 @@ export default function Index() {
           </TabsList>
 
           <TabsContent value="main" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2 space-y-6">
-                <Card className="relative overflow-hidden bg-gradient-to-br from-cyan-100 via-emerald-100 to-teal-200 border-0 shadow-lg">
-                  <div className="absolute top-0 right-0 w-64 h-64 bg-white/20 rounded-full -mr-32 -mt-32" />
-                  <div className="relative p-8">
-                    <div className="flex items-center justify-between mb-8">
-                      <div>
-                        <p className="text-sm text-slate-600 mb-1">Всего средств</p>
-                        <h2 className="text-4xl font-bold text-slate-900">{balance.toLocaleString()} ₽</h2>
-                      </div>
-                      <div className="w-16 h-16 bg-white/30 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                        <Icon name="Wallet" size={32} className="text-emerald-700" />
-                      </div>
-                    </div>
-                    
-                    <div className="bg-white/40 backdrop-blur-md rounded-2xl p-6 border border-white/50">
-                      <div className="flex items-center justify-between mb-4">
-                        <span className="text-sm font-medium text-slate-600">МИР - 3486</span>
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Mir_logo.svg/200px-Mir_logo.svg.png" alt="МИР" className="h-6" />
-                      </div>
-                      <div className="text-3xl font-bold text-slate-900 mb-4">
-                        {balance.toLocaleString()} ₽
-                      </div>
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-slate-600">8966 5643 4533 3486</span>
-                        <span className="text-slate-600">До 08/2025</span>
-                      </div>
-                    </div>
-                  </div>
-                </Card>
-
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <Button 
-                    onClick={() => setActiveTab('finance')}
-                    className="h-24 bg-white hover:bg-slate-50 text-slate-900 border border-slate-200 flex-col gap-2 shadow-sm hover:shadow-md transition-all"
-                  >
-                    <Icon name="PiggyBank" size={24} className="text-green-600" />
-                    <span className="text-sm">Вклады</span>
-                  </Button>
-                  <Button 
-                    onClick={() => setActiveTab('finance')}
-                    className="h-24 bg-white hover:bg-slate-50 text-slate-900 border border-slate-200 flex-col gap-2 shadow-sm hover:shadow-md transition-all"
-                  >
-                    <Icon name="CreditCard" size={24} className="text-blue-600" />
-                    <span className="text-sm">Кредиты</span>
-                  </Button>
-                  <Button 
-                    onClick={() => setActiveTab('business')}
-                    className="h-24 bg-white hover:bg-slate-50 text-slate-900 border border-slate-200 flex-col gap-2 shadow-sm hover:shadow-md transition-all"
-                  >
-                    <Icon name="Briefcase" size={24} className="text-purple-600" />
-                    <span className="text-sm">Бизнес</span>
-                  </Button>
-                  <Button 
-                    onClick={() => setActiveTab('market')}
-                    className="h-24 bg-white hover:bg-slate-50 text-slate-900 border border-slate-200 flex-col gap-2 shadow-sm hover:shadow-md transition-all"
-                  >
-                    <Icon name="ShoppingCart" size={24} className="text-orange-600" />
-                    <span className="text-sm">Магазин</span>
-                  </Button>
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <Card className="p-6 bg-gradient-to-br from-green-500 to-emerald-600 text-white border-0 shadow-lg">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold">Ваши бизнесы</h3>
-                    <Icon name="TrendingUp" size={20} />
-                  </div>
-                  {ownedBusinesses.length === 0 ? (
-                    <p className="text-sm text-white/80">У вас пока нет бизнесов</p>
-                  ) : (
-                    <div className="space-y-3">
-                      {ownedBusinesses.map((business) => (
-                        <div key={business.id} className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
-                          <div className="font-medium text-sm">{business.name}</div>
-                          <div className="text-xs text-white/80">
-                            +{business.income.toLocaleString()}₽/месяц
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </Card>
-
-                <Card className="p-6 border-slate-200 shadow-sm">
-                  <h3 className="font-semibold mb-4 flex items-center gap-2">
-                    <Icon name="Clock" size={18} className="text-slate-600" />
-                    Последние операции
-                  </h3>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-slate-600">Начальный баланс</span>
-                      <span className="font-medium text-green-600">+170,000₽</span>
-                    </div>
-                  </div>
-                </Card>
-              </div>
-            </div>
+            <MainTab 
+              balance={balance} 
+              ownedBusinesses={ownedBusinesses} 
+              setActiveTab={setActiveTab} 
+            />
           </TabsContent>
 
           <TabsContent value="finance" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div>
-                <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                  <Icon name="PiggyBank" className="text-green-600" />
-                  Вклады
-                </h2>
-                <div className="space-y-4">
-                  {deposits.map((deposit) => (
-                    <Card key={deposit.id} className="p-6 hover:shadow-lg transition-shadow border-slate-200">
-                      <div className="flex items-start justify-between mb-4">
-                        <div>
-                          <h3 className="font-semibold text-lg mb-1">{deposit.name}</h3>
-                          <p className="text-sm text-slate-600">{deposit.term}</p>
-                        </div>
-                        <Badge className="bg-green-100 text-green-700 hover:bg-green-100">
-                          {deposit.rate}% годовых
-                        </Badge>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-slate-600">
-                          От {deposit.minAmount.toLocaleString()}₽
-                        </span>
-                        <Button 
-                          onClick={() => handleOpenDeposit(deposit)}
-                          className="bg-green-600 hover:bg-green-700"
-                        >
-                          Открыть
-                        </Button>
-                      </div>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                  <Icon name="CreditCard" className="text-blue-600" />
-                  Кредиты
-                </h2>
-                <div className="space-y-4">
-                  {credits.map((credit) => (
-                    <Card key={credit.id} className="p-6 hover:shadow-lg transition-shadow border-slate-200">
-                      <div className="flex items-start justify-between mb-4">
-                        <div>
-                          <h3 className="font-semibold text-lg mb-1">{credit.name}</h3>
-                          <p className="text-sm text-slate-600">{credit.term}</p>
-                        </div>
-                        <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-100">
-                          {credit.rate}% годовых
-                        </Badge>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-slate-600">
-                          До {credit.maxAmount.toLocaleString()}₽
-                        </span>
-                        <Button 
-                          onClick={() => handleOpenCredit(credit)}
-                          className="bg-blue-600 hover:bg-blue-700"
-                        >
-                          Оформить
-                        </Button>
-                      </div>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            </div>
+            <FinanceTab 
+              deposits={deposits}
+              credits={credits}
+              onOpenDeposit={handleOpenDeposit}
+              onOpenCredit={handleOpenCredit}
+            />
           </TabsContent>
 
           <TabsContent value="business" className="space-y-6">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold flex items-center gap-2">
-                <Icon name="Briefcase" className="text-purple-600" />
-                Бизнес-возможности
-              </h2>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {businesses.map((business) => (
-                <Card key={business.id} className="p-6 hover:shadow-lg transition-shadow border-slate-200">
-                  <div className="mb-4">
-                    <h3 className="font-bold text-xl mb-2">{business.name}</h3>
-                    <p className="text-sm text-slate-600 mb-4">{business.description}</p>
-                  </div>
-                  
-                  <div className="space-y-3 mb-4">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-slate-600">Стоимость:</span>
-                      <span className="font-semibold">{business.cost.toLocaleString()}₽</span>
-                    </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-slate-600">Доход/месяц:</span>
-                      <span className="font-semibold text-green-600">
-                        +{business.income.toLocaleString()}₽
-                      </span>
-                    </div>
-                  </div>
-
-                  <Button 
-                    onClick={() => handleBuyBusiness(business)}
-                    className="w-full bg-purple-600 hover:bg-purple-700"
-                    disabled={balance < business.cost || ownedBusinesses.some(b => b.id === business.id)}
-                  >
-                    {ownedBusinesses.some(b => b.id === business.id) ? 'Куплено' : 'Купить'}
-                  </Button>
-                </Card>
-              ))}
-            </div>
+            <BusinessTab 
+              businesses={businesses}
+              balance={balance}
+              ownedBusinesses={ownedBusinesses}
+              onBuyBusiness={handleBuyBusiness}
+            />
           </TabsContent>
 
           <TabsContent value="market" className="space-y-6">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold flex items-center gap-2">
-                <Icon name="ShoppingBag" className="text-orange-600" />
-                СберМаркет
-              </h2>
-              <Button 
-                onClick={() => setIsSellDialogOpen(true)}
-                className="bg-green-600 hover:bg-green-700"
-              >
-                <Icon name="Plus" size={16} className="mr-2" />
-                Продать товар
-              </Button>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {products.map((product) => (
-                <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow border-slate-200">
-                  <div className="aspect-square overflow-hidden">
-                    <img 
-                      src={product.image} 
-                      alt={product.name}
-                      className="w-full h-full object-cover hover:scale-105 transition-transform"
-                    />
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-semibold mb-1 line-clamp-1">{product.name}</h3>
-                    <p className="text-xs text-slate-600 mb-2">{product.seller}</p>
-                    <p className="text-sm text-slate-600 mb-3 line-clamp-2">{product.description}</p>
-                    <div className="flex items-center justify-between">
-                      <span className="text-lg font-bold">{product.price.toLocaleString()}₽</span>
-                      <Button 
-                        onClick={() => handleBuyProduct(product)}
-                        size="sm"
-                        className="bg-orange-600 hover:bg-orange-700"
-                      >
-                        Купить
-                      </Button>
-                    </div>
-                  </div>
-                </Card>
-              ))}
-            </div>
+            <MarketTab 
+              products={products}
+              onBuyProduct={handleBuyProduct}
+              onOpenSellDialog={() => setIsSellDialogOpen(true)}
+            />
           </TabsContent>
         </Tabs>
       </main>
 
-      <Dialog open={isDepositDialogOpen} onOpenChange={setIsDepositDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Открыть вклад "{selectedDeposit?.name}"</DialogTitle>
-            <DialogDescription>
-              Ставка: {selectedDeposit?.rate}% годовых | Срок: {selectedDeposit?.term}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4 py-4">
-            <div>
-              <Label htmlFor="deposit-amount">Сумма вклада (мин. {selectedDeposit?.minAmount.toLocaleString()}₽)</Label>
-              <Input
-                id="deposit-amount"
-                type="number"
-                value={depositAmount}
-                onChange={(e) => setDepositAmount(e.target.value)}
-                placeholder="Введите сумму"
-              />
-            </div>
-            <div className="bg-slate-100 p-4 rounded-lg">
-              <p className="text-sm text-slate-600">Доступно на счете:</p>
-              <p className="text-xl font-bold">{balance.toLocaleString()}₽</p>
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsDepositDialogOpen(false)}>
-              Отмена
-            </Button>
-            <Button onClick={handleCreateDeposit} className="bg-green-600 hover:bg-green-700">
-              Открыть вклад
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <DepositDialog 
+        isOpen={isDepositDialogOpen}
+        onOpenChange={setIsDepositDialogOpen}
+        selectedDeposit={selectedDeposit}
+        depositAmount={depositAmount}
+        setDepositAmount={setDepositAmount}
+        balance={balance}
+        onCreateDeposit={handleCreateDeposit}
+      />
 
-      <Dialog open={isCreditDialogOpen} onOpenChange={setIsCreditDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Оформить кредит "{selectedCredit?.name}"</DialogTitle>
-            <DialogDescription>
-              Ставка: {selectedCredit?.rate}% годовых | Срок: {selectedCredit?.term}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4 py-4">
-            <div>
-              <Label htmlFor="credit-amount">Сумма кредита (макс. {selectedCredit?.maxAmount.toLocaleString()}₽)</Label>
-              <Input
-                id="credit-amount"
-                type="number"
-                value={creditAmount}
-                onChange={(e) => setCreditAmount(e.target.value)}
-                placeholder="Введите сумму"
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsCreditDialogOpen(false)}>
-              Отмена
-            </Button>
-            <Button onClick={handleTakeCredit} className="bg-blue-600 hover:bg-blue-700">
-              Получить кредит
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <CreditDialog 
+        isOpen={isCreditDialogOpen}
+        onOpenChange={setIsCreditDialogOpen}
+        selectedCredit={selectedCredit}
+        creditAmount={creditAmount}
+        setCreditAmount={setCreditAmount}
+        onTakeCredit={handleTakeCredit}
+      />
 
-      <Dialog open={isSellDialogOpen} onOpenChange={setIsSellDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Продать товар</DialogTitle>
-            <DialogDescription>
-              AI автоматически создаст изображение для вашего товара
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4 py-4">
-            <div>
-              <Label htmlFor="product-name">Название товара</Label>
-              <Input
-                id="product-name"
-                value={newProduct.name}
-                onChange={(e) => setNewProduct({...newProduct, name: e.target.value})}
-                placeholder="Например: Велосипед горный"
-              />
-            </div>
-            <div>
-              <Label htmlFor="product-price">Цена (₽)</Label>
-              <Input
-                id="product-price"
-                type="number"
-                value={newProduct.price}
-                onChange={(e) => setNewProduct({...newProduct, price: e.target.value})}
-                placeholder="Введите цену"
-              />
-            </div>
-            <div>
-              <Label htmlFor="product-description">Описание</Label>
-              <Textarea
-                id="product-description"
-                value={newProduct.description}
-                onChange={(e) => setNewProduct({...newProduct, description: e.target.value})}
-                placeholder="Опишите ваш товар"
-                rows={3}
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsSellDialogOpen(false)}>
-              Отмена
-            </Button>
-            <Button onClick={handleSellProduct} className="bg-green-600 hover:bg-green-700">
-              <Icon name="Sparkles" size={16} className="mr-2" />
-              Выставить на продажу
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <SellProductDialog 
+        isOpen={isSellDialogOpen}
+        onOpenChange={setIsSellDialogOpen}
+        newProduct={newProduct}
+        setNewProduct={setNewProduct}
+        onSellProduct={handleSellProduct}
+      />
     </div>
   );
 }

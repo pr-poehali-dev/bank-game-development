@@ -1,0 +1,18 @@
+{
+  "tests": [
+    {
+      "name": "Test get marketplace",
+      "method": "GET",
+      "path": "/?path=marketplace",
+      "expectedStatus": 200,
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Test get real estate",
+      "method": "GET",
+      "path": "/?path=realestate",
+      "expectedStatus": 200,
+      "bodyMatcher": "partial"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "tests": [
+    {
+      "name": "Test bot execution",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "purchases_made": 0
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
